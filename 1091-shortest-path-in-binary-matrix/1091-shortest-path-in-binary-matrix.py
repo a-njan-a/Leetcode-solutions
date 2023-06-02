@@ -1,0 +1,26 @@
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        if (grid[0][0] or grid[-1][-1]):
+            return -1
+
+        directions = [(-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1)]
+
+        queue = collections.deque([(0, 0, 1)])
+
+        grid[0][0] = 1
+
+        while(queue):
+            x, y, path_len = queue.popleft()
+
+            if (x, y) == (len(grid)-1, len(grid[0])-1):
+                return path_len
+
+            for x_cord, y_cord in directions:
+                new_x = x + x_cord
+                new_y = y + y_cord
+
+                if (0 <= new_x < len(grid)) and (0 <= new_y < len(grid[0])) and not (grid[new_x][new_y]):
+                    grid[new_x][new_y] = 1
+                    queue.append((new_x, new_y, path_len + 1))
+
+        return -1
